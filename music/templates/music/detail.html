@@ -1,0 +1,100 @@
+{% extends 'music/base.html' %}
+{% block title %}{{ album }}{% endblock %}
+{% block albums_active %}active{% endblock %}
+
+{% block body %}
+    <div class="container-fluid songs-container">
+
+        <div class="row">
+
+            <!-- Left Album Info -->
+            <div class="col-sm-4 col-md-3 p-2 bg-faded">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <a href="{% url 'music:detail' album.id %}">
+                            {% if album.album_logo %}
+                                <img src="{{ album.album_logo.url }}" class="img-responsive" style="width: 300px">
+                            {% else %}
+                                <h3>No image to display</h3>
+                            {% endif %}
+                        </a>
+                        <h1>{{ album.album_title }}
+                            <small>{{ album.genre }}</small>
+                        </h1>
+                        <h2>{{ album.artist }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Song Info -->
+            <div class="col-sm-8 col-md-9">
+
+                <ul class="nav nav-pills" style="margin: 10px;">
+                    <a href="{% url 'music:detail' album.id %}" class="btn btn-primary" style="margin-right: 10px">View All </a>
+                    <a href="{% url 'music:create_song' album.id %}" class="btn btn-primary">Add New Song </a>
+                </ul>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+
+                        <h3>All Songs</h3>
+
+                        {% if error_message %}
+                            <p><strong>{{ error_message }}</strong></p>
+                        {% endif %}
+
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Audio File</th>
+                                <th>Favorite</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for song in album.songs_set.all %}
+                                <tr>
+                                    <td>{{ song.song_title }}</td>
+                                    <td>
+                                        <a target="_blank" href="{{ song.audio_file.url }}">
+                                            <button type="button" class="btn btn-success btn-xs">
+                                                <i class="fa fa-play-circle"></i> Play
+                                            </button>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'music:favorite' song.id %}" class="btn-favorite"><i
+                                                class="fa {% if user.username in song.is_favorite %}fa-star{% else %}fa-star-o{% endif %}"></i></a>
+                                    </td>
+                                    <td>
+                                        {% if album.name == user.username %}
+                                        <form action="{% url 'music:delete_song' album.id song.id %}" method="post"
+                                              style="display: inline;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="song_id" value="{{ song.id }}"/>
+                                            <button type="submit" class="btn btn-danger btn-xs">
+                                                <i class="fa fa-trash-o"></i>&nbsp; Delete
+                                            </button>
+                                        </form>
+                                        {% else %}
+                                            <button class="btn disabled btn-xs">
+                                                <i class="fa fa-trash-o"></i>&nbsp; Delete
+                                            </button>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

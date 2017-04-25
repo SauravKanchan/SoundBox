@@ -1,0 +1,18 @@
+        <div class="col-10 col-sm-offset-2">
+            <span class="text-danger small">{{ error }}</span>
+
+        </div>
+{% for field in form %}
+    <div class="form-group col-sm-12">
+        <div class="col-10 col-sm-offset-2">
+            <span class="text-danger small">{{ field.errors }}</span>
+        </div>
+        {% if field.name != "acces" %}
+        <label class="col-form-label col-4 float-left">{{ field.label_tag }}</label>
+        <div class="col-6 m-2">{{ field }}</div>
+        {% else %}
+            <label class="col-form-label col-4 float-left" style="visibility: hidden;width: 0;height: 0">{{ field.label_tag }}</label>
+            <div class="col-6 m-2" style="visibility: hidden;width: 0;height: 0">{{ field }}</div>
+        {% endif %}
+    </div>
+{% endfor %}

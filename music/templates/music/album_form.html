@@ -1,0 +1,29 @@
+{% extends 'music/base.html' %}
+{% block title %}Add A New Album{% endblock %}
+{% block albums_active %}active{% endblock %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        <div class="container-fluid p-3 col-sm-4">
+            <form class="form-horizontal bg-faded " action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% include 'music/form-template.html' %}
+                <div class="form-group">
+                    <div class="p-2">
+                        <button class="btn btn-success media-middle" type="submit" onclick="">Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    {% else %}
+        <div class="jumbotron m-5" style="background-image: url(images/jumbotron_background.jpg) ">
+
+            <div class="container">
+                <h1 class="display-3">Sound Box</h1>
+                <p class="lead">Sign up now to add Albums</p>
+                <a href="{% url 'music:register' %}" class="btn btn-success">Sign Up</a>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

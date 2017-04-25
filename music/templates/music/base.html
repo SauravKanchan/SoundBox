@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Sound Box{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    {% load staticfiles %}
+    <link href="{% static 'music/style.css' %}" type="text/css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=UnifrakturCook:700" rel="stylesheet">
+    <script src="https://use.fontawesome.com/0f4523c9e1.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+            integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+            crossorigin="anonymous"></script>
+
+
+</head>
+<body>
+<div role="navigation" class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand " href="{% url 'music:index' %}" style="font-family: 'UnifrakturCook', cursive;">Sound
+        Box</a>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'music:index' %}">Albums <i class="fa fa-play-circle"></i> </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'music:songs' 'all'%}">Songs <i class="fa fa-music"></i> </a>
+            </li>
+
+        </ul>
+        <form class="form-inline my-2 my-lg-0"  role="search" method="get"  action="{% url 'music:search' %}">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" name="q">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search <i class="fa fa-search"></i> </button>
+        </form>
+        <ul class="navbar-nav ">
+
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'music:logout' %}">Logout <i class="fa fa-power-off"
+                                                                                  aria-hidden="true"></i></a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'music:album-add' %}">Add Album <i class="fa fa-plus-circle fa-lg"></i></a>
+            </li>
+
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'music:login' %}">Login <i class="fa fa-power-off"
+                                                                                aria-hidden="true"></i></a>
+                </li>
+            {% endif %}
+
+
+        </ul>
+    </div>
+</div>
+{% block body %}
+{% endblock %}
+</body>
+</html>

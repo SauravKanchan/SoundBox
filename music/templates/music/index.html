@@ -1,0 +1,53 @@
+{% extends 'music/base.html' %}
+{% block body %}
+    <div class="container-fluid">
+        {% if user.is_authenticated %}
+            {% if all_albums %}
+                <div class="row">
+                    {% for album in all_albums %}
+                        <div class="col-sm-3">
+                            <div class="card">
+                                <a href="{% url 'music:detail' album.id %}"><img class="card-img-top p-1"
+                                                                                 src="{{ album.album_logo }}"
+                                                                                 alt="Card image cap"
+                                                                                 style="margin-left: auto;margin-right:auto;max-height: inherit;width: 280px"></a>
+                                <div class="card-block">
+                                    <h4 class="card-title">{{ album.album_title }}</h4>
+                                    <h6 class="card-subtitle mb-2 text-muted">{{ album.artist }}</h6>
+                                    <a href="{% url 'music:detail' album.id %}" class="btn btn-primary">View
+                                        Details </a>
+                                    {% if album.name == user.username %}
+                                    <a href="{% url 'music:album-delete' album.id %}" class="btn btn-disabled"><i
+                                            class="fa fa-trash"></i> </a>
+                                    {% else %}
+                                    {% endif %}
+                                    <a href="{% url 'music:favoriteAlbum' album.id %}" class="btn"><i class="fa {% if user.username in album.is_favorite %}fa-star{% else %}fa-star-o{% endif %} "></i> </a>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+<div class="jumbotron m-5 bg-faded" >
+
+                <div class="container">
+                    <h1 class="display-3">You don't have any Album</h1>
+                    <p class="lead">Click below to add a new album</p>
+                    <a href="{% url 'music:album-add' %}" class="btn btn-success">Add <i class="fa fa-plus"></i> </a>
+                </div>
+            </div>            {% endif %}
+        {% else %}
+
+            <div class="jumbotron m-5 bg-faded" >
+
+                <div class="container">
+                    <h1 class="display-3">Sound Box</h1>
+                    <p class="lead">Sign up now to listen your favourite songs</p>
+                    <a href="{% url 'music:register' %}" class="btn btn-success">Sign Up</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
